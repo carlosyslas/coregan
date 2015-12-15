@@ -77,18 +77,15 @@ $svg.append('g')
   .attr('fill', '#fff')
   .text(players.length);
 
-function render(players) {
-  let $players = $canvas.selectAll('.player')
-        .data(players);
-  let $playersEnter = $players.enter()
+function createNewPlayers($players) {
+  let $newPlayers = $players.enter()
         .append('g')
         .attr('class', 'player');
 
-  $svg.select('.player-count').select('text')
-    .text(() => 'Players: ' + players.length);
+  $newPlayers
+    .attr('transform', (d) => `translate(${scale(d.position.x - d.size)} ${scale(d.position.y - d.size)})`);
 
-  $playersEnter
-    .attr('transform', (d) => `translate(${scale(d.position.x - d.size)} ${scale(d.position.y - d.size)})`)
+  $newPlayers
     .append('circle')
     .attr('r', (d) => scale(d.size))
     .attr('cx', (d) => scale(d.size))
@@ -97,14 +94,24 @@ function render(players) {
     .attr('fill-opacity', 0.8)
     .attr('stroke', (d) => d.color)
     .attr('stroke-width', 2);
-  $playersEnter.append('text')
+
+  $newPlayers.append('text')
     .attr('x', d => scale(d.size))
     .attr('y', d => scale(d.size))
     .attr('text-anchor', 'middle')
     .attr('fill', '#fff')
     .attr('stroke', '#000')
     .text(d => d.type === 'NPC' ? '' : d.name);
+}
 
+function removeDeletedPlayers($players) {
+  let $deletedPlayers = $players.exit();
+
+  $players.exit()
+    .remove();
+}
+
+function updateExistingPlayers($players) {
   $players.attr('transform', (d) => `translate(${scale(d.position.x - d.size)} ${scale(d.position.y - d.size)})`)
     .select('circle').attr('cx', (d) => scale(d.size))
     .attr('cy', (d) => scale(d.size))
@@ -113,14 +120,11 @@ function render(players) {
     .attr('stroke', (d) => d.color)
     .each(function (d) {
       if (d.id && d.id === playerId) {
-        console.log('id', d.type);
         let width = $svg.node().clientWidth;
         let height = $svg.node().clientHeight;
-        let zoomLevel = zoomScale(d.size);//$svg.node().clientWidth / scale(d.size) / 50;
+        let zoomLevel = zoomScale(d.size);
         zoom.translate([-scale(d.position.x) * zoomLevel + width / 2, -scale(d.position.y) * zoomLevel + height / 2]);
-        //zoom.scale(7.5);
         zoom.scale(zoomLevel);
-        //1396 7.5 30
       }
       $canvas.attr('transform', d => `translate(${zoom.translate()}) scale(${zoom.scale()})`);
     });
@@ -129,10 +133,18 @@ function render(players) {
     .attr('x', d => scale(d.size))
     .attr('y', d => scale(d.size))
     .text(d => d.type === 'NPC' ? '' : d.name);
+}
 
-  $players.exit()
-    .remove();
+function render(players) {
+  let $players = $canvas.selectAll('.player')
+        .data(players);
 
+  $svg.select('.player-count').select('text')
+    .text(() => 'Players: ' + players.length);
+
+  $players.call(createNewPlayers);
+  $players.call(updateExistingPlayers);
+  $players.call(removeDeletedPlayers);
 }
 
 function tick() {
@@ -177,7 +189,6 @@ $playAgainButton.on('click', play);
 
 socket.on('updatePlayers', function (players) {
   if (bla) {
-    console.log('players', players);
     bla = false;
   }
   render(players.map(function (player) {
