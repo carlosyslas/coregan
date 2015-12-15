@@ -86,9 +86,9 @@ function Player(type, name, socket) {
   this.position = getSafePosition(type === PLAYER_TYPES.npc);
   this.sizeDisambiguation = Math.random();
   if (type === PLAYER_TYPES.npc) {
-    this.size = Math.random() * 10;
+    this.size = (Math.random() * 10) + 10;
   } else {
-    this.size = 30;
+    this.size = 40;
     this.id = 'player' + lastPlayerCount;
     lastPlayerCount += 1;
   }
@@ -141,7 +141,7 @@ function Player(type, name, socket) {
     ];
 
     if (Math.floor(Math.random() * 4) === 0) {
-      return speeds[Math.floor(Math.random() * 8)];
+      return speeds[Math.floor(Math.random() * speeds.length)];
     }
 
     return defaultSpeed;

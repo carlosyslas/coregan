@@ -12,7 +12,6 @@ var zoom = d3.behavior.zoom()
     .on("zoom", zoomed);
 let zoomScale = d3.scale.linear();
 let $svg = d3.select('#canvas');
-let $canvas = d3.select('#canvas').append('g').call(zoom).append('g');
 
 scale.domain([0, HIGH_LIMIT])
   .range([0, $svg.node().clientWidth]);
@@ -49,10 +48,11 @@ const playerColors = {
   'TEMPO': 'hsl(130, 70%, 50%)',
   'MIRROR': 'hsl(65, 70%, 50%)',
   'VOID': 'hsl(255, 70%, 50%)',
-  'NPC': 'hsl(0, 0%, 50%)'
+  'NPC': 'hsl(0, 0%, 80%)'
 };
 let playerId;
 
+let $canvas = d3.select('#canvas').append('g').call(zoom).append('g');
 $canvas.append('g')
   .attr('class', 'y-axis')
   .attr('transform', () => `translate(${scale(-5000)} ${scale(-5000)})`)
@@ -62,6 +62,7 @@ $canvas.append('g')
   .attr('class', 'x-axis')
   .attr('transform', () => `translate(${scale(-5000)} ${scale(-5000)})`)
   .call(xAxis);
+
 
 $canvas.append('rect')
   .attr('stroke-width', 2)
