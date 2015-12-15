@@ -159,7 +159,7 @@ function Player(type, name, socket) {
         yS = this.speed.dy / Math.abs(this.speed.dy || 1);
 
     if (this.size >= MAX_PLAYER_SIZE) {
-      this.size = MAX_PLAYER_SIZE - 1;
+      this.size = MAX_PLAYER_SIZE - 5;
     }
     this.speed.dx = (MAX_PLAYER_SIZE - this.size) * xS;
     this.speed.dy = (MAX_PLAYER_SIZE - this.size) * yS;
@@ -186,7 +186,7 @@ function Player(type, name, socket) {
 
   function eat(player) {
     player.die();
-    this.size += player.size;
+    this.size += (player.size / 2);
   }
 
   function move() {
