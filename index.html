@@ -1,0 +1,120 @@
+<!doctype html>
+<head>
+  <style>
+   html, body, #canvas {
+     height: 100%;
+   }
+   body {
+     margin: 0;
+     color: #fff;
+     font-family: sans-serif;
+     background: #2100FF;
+    overflow: hidden;
+   }
+   #canvas {
+     width: 100%;
+   }
+
+   #canvas {
+     background: #111;
+     transition: 0.5s;
+     font-weight: bolder;
+   }
+
+   .y-axis line,
+   .x-axis line {
+    fill: none;
+    stroke: #00254A;
+  }
+    #overlay {
+      transition: 1s;
+      width: 500px;
+      height: 250px;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      background: rgba(40, 54, 113, 0.8);
+      margin-top: -125px;
+      margin-left: -250px;
+      border-radius: 30px;
+      box-shadow: 0px 0px 30px 0px #00E3FF;
+      padding: 30px;
+    }
+
+    .big-text {
+      margin: 0 0 50px 0;
+      font-size: 30px;
+     }
+
+    input {
+      display: block;
+      width: 100%;
+      background: #1A1F2D;
+      border: 1px solid #00E3FF;
+      color: #fff;
+      padding: 10px 20px;
+      box-sizing: border-box;
+      font-size: 20px;
+    }
+
+    button {
+      background: #00E3ff;
+      border: 1px solid #fff;
+      color: #fff;
+      box-shadow: 0px 0px 30px 0px #00E3FF;
+      padding: 10px 30px;
+      font-size: 20px;
+      border-radius: 10px;
+      outline: none;
+    }
+
+    button:active {
+      background: #0E8594;
+    }
+
+    .button-container {
+      padding: 30px 0px;
+      text-align: right;
+    }
+
+    .hidden {
+      display: none;
+    }
+    .overlay-hidden {
+      opacity: 0;
+      transform: translate(0, 125px);
+    }
+
+    #error {
+      margin-top: 10px;
+      color: #FF7A00;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <svg id="canvas"></svg>
+  <script>
+
+  </script>
+
+  <div id="overlay">
+    <div id="new-player-form">
+      <div class="big-text">Enter Your Name:</div>
+      <div><input type="text" tabindex="0" id="player-name"/></div>
+      <div id="error" class="hidden">You must provide a name</div>
+      <div class="button-container"><button id="play-button">Play</button></div>
+    </div>
+    <div id="game-over-screen" class="hidden">
+      <div class="big-text">Game Over</div>
+      <div class="button-container"><button id="play-again-button">Play Again</button></div>
+    </div>
+  </div>
+
+  <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.9/d3.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/index.js"></script>
+
+</body>
